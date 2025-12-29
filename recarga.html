@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Recarga PIX</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="tela-inicial">
+  <h2>💠 Recarga via PIX</h2>
+
+  <p>Escolha o valor da recarga</p>
+
+  <form id="formRecarga">
+    <input id="valorRecarga" type="number" placeholder="Ex: 20" required>
+    <button type="submit">Gerar PIX</button>
+  </form>
+
+  <div id="pixArea" style="display:none;margin-top:15px">
+    <p><strong>PIX gerado (simulado)</strong></p>
+    <p>Chave: <strong>pix@salaspremiadas.com</strong></p>
+    <button onclick="confirmarPix()">Já paguei</button>
+  </div>
+
+  <button onclick="window.location.href='carteira.html'">Voltar</button>
+</div>
+
+<script src="recarga.js"></script>
+</body>
+</html>
