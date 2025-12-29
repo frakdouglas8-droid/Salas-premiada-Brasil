@@ -28,8 +28,6 @@ document.getElementById("formCriarSala").addEventListener("submit", function(e){
 
   salasPrivadas.push(novaSala);
 
-  localStorage.setItem("salasPrivadas", JSON.stringify(salasPrivadas));
-
   alert(
     "Sala criada com sucesso!\n\n" +
     "Valor: R$ " + valor + "\n" +
