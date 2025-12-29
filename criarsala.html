@@ -1,40 +1,25 @@
-const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Criar Sala Privada</title>
+  <link rel="stylesheet" href="style.css">
+</head>
 
-if(!usuario){
-  alert("Você precisa estar logado");
-  window.location.href = "login.html";
-}
+<body>
 
-// Garantir que a lista exista
-let salasPrivadas = JSON.parse(localStorage.getItem("salasPrivadas")) || [];
+<div class="tela-inicial">
+  <h2>Criar Sala Privada</h2>
 
-document.getElementById("formCriarSala").addEventListener("submit", function(e){
-  e.preventDefault();
+  <form id="formCriarSala">
+    <input id="valorSala" type="number" placeholder="Valor da sala (ex: 20)" required>
+    <input id="codigoSala" placeholder="Código de acesso" required>
+    <button type="submit">Criar Sala</button>
+  </form>
 
-  const valor = parseFloat(document.getElementById("valorSala").value);
-  const codigo = document.getElementById("codigoSala").value;
+  <button onclick="window.location.href='salas.html'">Voltar</button>
+</div>
 
-  if(!valor || !codigo){
-    alert("Preencha tudo");
-    return;
-  }
-
-  const novaSala = {
-    valor: valor,
-    codigo: codigo,
-    criador: usuario.email,
-    participantes: []
-  };
-
-  salasPrivadas.push(novaSala);
-
-  localStorage.setItem("salasPrivadas", JSON.stringify(salasPrivadas));
-
-  alert(
-    "Sala criada com sucesso!\n\n" +
-    "Valor: R$ " + valor + "\n" +
-    "Código: " + codigo
-  );
-
-  window.location.href = "salas.html";
-});
+<script src="criarsala.js"></script>
+</body>
+</html>
