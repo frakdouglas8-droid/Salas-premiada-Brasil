@@ -1,28 +1,40 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Criar Sala Privada</title>
-  <link rel="stylesheet" href="style.css">
-</head>
+const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
 
-<body>
+if(!usuario){
+  alert("Você precisa estar logado");
+  window.location.href = "login.html";
+}
 
-<h2 style="text-align:center">➕ Criar Sala Privada</h2>
+// Garantir que a lista exista
+let salasPrivadas = JSON.parse(localStorage.getItem("salasPrivadas")) || [];
 
-<div class="tela-inicial">
+document.getElementById("formCriarSala").addEventListener("submit", function(e){
+  e.preventDefault();
 
-  <form id="formSala">
-    <input id="valor" type="number" placeholder="Valor da sala (ex: 20)" required>
-    <input id="codigo" placeholder="Código de acesso" required>
+  const valor = parseFloat(document.getElementById("valorSala").value);
+  const codigo = document.getElementById("codigoSala").value;
 
-    <div class="criar-sala-btn" onclick="window.location.href='criarsala.html'">
-  ➕ Criar Sala
-    </div>
-<h2 style="text-align:center">Salas Privadas</h2>
-<div id="salasPrivadas" class="salas-container"></div>
-<script src="criarsala.js"></script>
-</body>
-</html>
-<h2 style="text-align:center">Salas Privadas</h2>
-<div id="salasPrivadas" class="salas-container"></div>
+  if(!valor || !codigo){
+    alert("Preencha tudo");
+    return;
+  }
+
+  const novaSala = {
+    valor: valor,
+    codigo: codigo,
+    criador: usuario.email,
+    participantes: []
+  };
+
+  salasPrivadas.push(novaSala);
+
+  localStorage.setItem("salasPrivadas", JSON.stringify(salasPrivadas));
+
+  alert(
+    "Sala criada com sucesso!\n\n" +
+    "Valor: R$ " + valor + "\n" +
+    "Código: " + codigo
+  );
+
+  window.location.href = "salas.html";
+});
