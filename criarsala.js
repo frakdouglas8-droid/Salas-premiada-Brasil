@@ -1,26 +1,40 @@
 const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+
 if(!usuario){
-  alert("Faça login");
+  alert("Você precisa estar logado");
   window.location.href = "login.html";
 }
 
-document.getElementById("formSala").addEventListener("submit", function(e){
+// Garantir que a lista exista
+let salasPrivadas = JSON.parse(localStorage.getItem("salasPrivadas")) || [];
+
+document.getElementById("formCriarSala").addEventListener("submit", function(e){
   e.preventDefault();
 
-  const valor = parseFloat(document.getElementById("valor").value);
-  const codigo = document.getElementById("codigo").value;
+  const valor = parseFloat(document.getElementById("valorSala").value);
+  const codigo = document.getElementById("codigoSala").value;
 
-  let salasPrivadas = JSON.parse(localStorage.getItem("salasPrivadas")) || [];
+  if(!valor || !codigo){
+    alert("Preencha tudo");
+    return;
+  }
 
-  salasPrivadas.push({
-    valor,
-    codigo,
+  const novaSala = {
+    valor: valor,
+    codigo: codigo,
     criador: usuario.email,
     participantes: []
-  });
+  };
+
+  salasPrivadas.push(novaSala);
 
   localStorage.setItem("salasPrivadas", JSON.stringify(salasPrivadas));
 
-  alert("Sala privada criada!\nCódigo: " + codigo);
+  alert(
+    "Sala criada com sucesso!\n\n" +
+    "Valor: R$ " + valor + "\n" +
+    "Código: " + codigo
+  );
+
   window.location.href = "salas.html";
 });
