@@ -51,12 +51,45 @@ function entrarSala(index){
   }
 
   sala.participantes.push(usuario.email);
-  localStorage.setItem("salas", JSON.stringify(salas));
 
+  // 🔥 QUANDO COMPLETAR 20, FAZ SORTEIO
   if(sala.participantes.length === 20){
-    alert("Sala lotada! Sorteio automático na próxima fase 🔥");
+
+    const vencedorEmail = sala.participantes[
+      Math.floor(Math.random() * sala.participantes.length)
+    ];
+
+    let usuarios = JSON.parse(localStorage.getItem("usuarios"));
+
+    const valorTotal = sala.valor * 20;
+    const premio = valorTotal * 0.85; // 85% para o vencedor
+
+    usuarios = usuarios.map(u => {
+      if(u.email === vencedorEmail){
+        u.saldo += premio;
+
+        alert(
+          "🎉 Sorteio realizado!\n\n" +
+          "Vencedor: " + u.nome + "\n" +
+          "Prêmio: R$ " + premio.toFixed(2)
+        );
+      }
+      return u;
+    });
+
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+
+    // Atualiza sessão se for o vencedor
+    if(usuario.email === vencedorEmail){
+      usuario.saldo += premio;
+      localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
+    }
+
+    // Zera a sala após o sorteio
+    sala.participantes = [];
   }
 
+  localStorage.setItem("salas", JSON.stringify(salas));
   renderSalas();
 }
 
