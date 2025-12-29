@@ -94,10 +94,10 @@ function entrarSala(index){
 renderSalas();
 const privContainer = document.getElementById("salasPrivadas");
 
-let salasPrivadas = JSON.parse(localStorage.getItem("salasPrivadas")) || [];
-
 function renderSalasPrivadas(){
   if(!privContainer) return;
+
+  const salasPrivadas = JSON.parse(localStorage.getItem("salasPrivadas")) || [];
 
   privContainer.innerHTML = "";
 
@@ -116,8 +116,10 @@ function renderSalasPrivadas(){
 }
 
 function entrarPrivada(index){
-  const codigo = prompt("Digite o código da sala:");
+  const salasPrivadas = JSON.parse(localStorage.getItem("salasPrivadas")) || [];
   const sala = salasPrivadas[index];
+
+  const codigo = prompt("Digite o código da sala:");
 
   if(codigo !== sala.codigo){
     alert("Código inválido");
@@ -125,7 +127,7 @@ function entrarPrivada(index){
   }
 
   if(sala.participantes.includes(usuario.email)){
-    alert("Você já entrou");
+    alert("Você já entrou nessa sala");
     return;
   }
 
@@ -136,38 +138,9 @@ function entrarPrivada(index){
 
   sala.participantes.push(usuario.email);
 
-  if(sala.participantes.length === 20){
-    sortearPrivada(sala);
-  }
-
   localStorage.setItem("salasPrivadas", JSON.stringify(salasPrivadas));
   renderSalasPrivadas();
 }
 
-function sortearPrivada(sala){
-  const vencedorEmail = sala.participantes[
-    Math.floor(Math.random() * sala.participantes.length)
-  ];
-
-  let usuarios = JSON.parse(localStorage.getItem("usuarios"));
-
-  const total = sala.valor * 20;
-  const premio = total * 0.80;
-  const criadorBonus = total * 0.05;
-
-  usuarios = usuarios.map(u=>{
-    if(u.email === vencedorEmail){
-      u.saldo += premio;
-      alert("🎉 Vencedor da sala privada!\nPrêmio: R$ " + premio.toFixed(2));
-    }
-    if(u.email === sala.criador){
-      u.saldo += criadorBonus;
-    }
-    return u;
-  });
-
-  localStorage.setItem("usuarios", JSON.stringify(usuarios));
-  sala.participantes = [];
-}
-
 renderSalasPrivadas();
+
