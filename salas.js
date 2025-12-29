@@ -59,8 +59,6 @@ function entrarSala(index){
       Math.floor(Math.random() * sala.participantes.length)
     ];
 
-    let usuarios = JSON.parse(localStorage.getItem("usuarios"));
-
     const valorTotal = sala.valor * 20;
     const premio = valorTotal * 0.85; // 85% para o vencedor
 
