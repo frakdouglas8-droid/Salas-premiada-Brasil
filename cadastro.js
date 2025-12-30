@@ -1,29 +1,32 @@
-document.getElementById("formCadastro").addEventListener("submit", function(e){
+document.getElementById("formCadastro").addEventListener("submit", async function(e){
   e.preventDefault();
 
-  const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-
-  const novoUsuario = {
-    nome: document.getElementById("nome").value,
-    email: document.getElementById("email").value,
-    telefone: document.getElementById("telefone").value,
-    senha: document.getElementById("senha").value,
-    saldo: 0
+  const dados = {
+    nome: nome.value,
+    email: email.value,
+    telefone: telefone.value,
+    senha: senha.value
   };
 
-  // Verifica se já existe
-  const existe = usuarios.find(u =>
-    u.email === novoUsuario.email || u.telefone === novoUsuario.telefone
-  );
+  try {
+    const res = await fetch("http://localhost:3000/api/cadastro", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dados)
+    });
 
-  if(existe){
-    alert("Usuário já cadastrado!");
-    return;
+    const json = await res.json();
+
+    if(!res.ok){
+      alert(json.erro);
+      return;
+    }
+
+    alert("Cadastro realizado com sucesso!");
+    window.location.href = "login.html";
+
+  } catch (err) {
+    alert("Erro ao conectar com o servidor");
   }
-
-  usuarios.push(novoUsuario);
-  localStorage.setItem("usuarios", JSON.stringify(usuarios));
-
-  alert("Cadastro realizado com sucesso!");
-  window.location.href = "login.html";
 });
+
