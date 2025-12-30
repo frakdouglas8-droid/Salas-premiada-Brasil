@@ -1,20 +1,31 @@
-document.getElementById("formLogin").addEventListener("submit", function(e){
+document.getElementById("formLogin").addEventListener("submit", async function(e){
   e.preventDefault();
 
-  const usuario = document.getElementById("usuario").value;
-  const senha = document.getElementById("senha").value;
+  const dados = {
+    login: usuario.value,
+    senha: senha.value
+  };
 
-  const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+  try {
+    const res = await fetch("http://localhost:3000/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dados)
+    });
 
-  const encontrado = usuarios.find(u =>
-    (u.email === usuario || u.telefone === usuario) && u.senha === senha
-  );
+    const json = await res.json();
 
-  if(!encontrado){
-    alert("Usuário ou senha inválidos");
-    return;
+    if(!res.ok){
+      alert(json.erro);
+      return;
+    }
+
+    // salva usuário logado (sessão simples)
+    localStorage.setItem("usuarioLogado", JSON.stringify(json.usuario));
+
+    window.location.href = "salas.html";
+
+  } catch (err) {
+    alert("Erro ao conectar com o servidor");
   }
-
-  localStorage.setItem("usuarioLogado", JSON.stringify(encontrado));
-  window.location.href = "salas.html";
 });
