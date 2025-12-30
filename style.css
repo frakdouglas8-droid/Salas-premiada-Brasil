@@ -135,3 +135,15 @@ a {
 a:hover {
   text-decoration: underline;
 }
+button:active {
+  transform: scale(0.96);
+  opacity: 0.9;
+}
+
+.sala button {
+  font-size: 13px;
+}
+
+.sala button:active {
+  background: linear-gradient(45deg,#ffd200,#f7971e);
+}
